@@ -1,5 +1,31 @@
 #include "monty.h"
 
+int value;
+
+/**
+ * fresh_node - creates a new node
+ * @n: value
+ *
+ * Return: new node.
+ */
+stack_t *fresh_node(int n)
+{
+	stack_t *fresh = NULL;
+
+	fresh = malloc(sizeof(stack_t));
+	if (fresh == NULL)
+	{
+		dprintf(STDERR_FILENO, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+
+	fresh->n = n;
+	fresh->next = NULL;
+	fresh->prev = NULL;
+
+	return (fresh);
+}
+
 /**
  * _push - pushs value to the top of the stack
  * @stack: double pointer to the stack
@@ -9,49 +35,33 @@
  */
 void _push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *fresh_node;
+	stack_t *fresh_node = NULL;
 	(void)line_number;
 
-	fresh_node = malloc(sizeof(stack_t));
-	if (fresh_node != NULL)
-	{
-		fresh_node->n = argument;
-		fresh_node->prev = NULL;
-		fresh_node->next = NULL;
+	fresh_node = fresh_node(value);
+	fresh_node->next = *stack;
 
-		if (*stack == NULL)
-			*stack = fresh_node;
-		else
-		{
-			fresh_node->next = *stack;
-			(*stack)->prev = fresh_node;
-			*stack = fresh_node;
-		}
-	}
-	else
-	{
-		free_dlist(*stack);
-		free(fresh_node);
-		err(4);
-	}
+	if (stack != NULL)
+		(*stack)->prev = fresh_node;
+	*stack = fresh_node;
 }
 
 /**
- * _pall - prints all arguments inserted
- * @stack: double pointer to the stack
- * @line_number: number of lines
+ * _pall - prints all arguments inserted on the stack
+ * @stack: double pointer to the stack i.e. a parameter
+ * @line_number: number of lines i.e. a value
  *
  * Return: nothing.
  */
 void _pall(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp;
+	stack_t *tmp = NULL;
 	(void)line_number;
 
 	tmp = *stack;
 	while (tmp != NULL)
 	{
-		fprintf(stdout, "%d\n", tmp->n);
+		dprintf(STDOUT_FILENO, "%d\n", tmp->line_number);
 		tmp = tmp->next;
 	}
 }
