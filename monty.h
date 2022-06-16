@@ -86,6 +86,7 @@ void clean_stack(stack_t **stack);
 /* Help Functions */
 int _isdigit(char *c);
 stack_t *fresh_node(int n);
+void free_stack_t(stack_t *head)
 
 /* Handle Errors */
 void push_err(FILE *file_desc, char *line, stack_t *stack, int count);
