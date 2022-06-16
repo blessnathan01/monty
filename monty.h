@@ -7,8 +7,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <fcntl.h>
 
-/* data structures */
+/* Data Structures - Stacks */
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -39,13 +43,28 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+/**
+ * global_s - globally access
+ * @file_desc: file descriptor
+ * @line: line to getline
+ *
+ * Description: handles a file and getline
+ */
+typedef struct global_s
+{
+	FILE *file_desc;
+	char *line;
+} global_t;
+
 /*global variable*/
-extern int argument;
-int argument;
+extern global_t argument;
+extern int value;
 
+void handle_cmd(char *argv);
+int get_opcode(stack_t **stack, char *arg, char *item, int count);
 
-/*function prototypes*/
-/*opcode functions*/
+/* Function Prototypes */
+/* Opcode Functions */
 void _push(stack_t **stack, unsigned int line_number);
 void _pall(stack_t **stack, unsigned int line_number);
 void _pint(stack_t **stack, unsigned int line_number);
@@ -54,19 +73,22 @@ void _swap(stack_t **stack, unsigned int line_number);
 void _add(stack_t **stack, unsigned int line_number);
 void _nop(stack_t **stack, unsigned int line_number);
 void _sub(stack_t **stack, unsigned int line_number);
-void _div_(stack_t **stack, unsigned int line_number);
+void _div(stack_t **stack, unsigned int line_number);
 void _mul(stack_t **stack, unsigned int line_number);
 void _mod(stack_t **stack, unsigned int line_number);
 void _pchar(stack_t **stack, unsigned int line_number);
 void _pstr(stack_t **stack, unsigned int line_number);
-void _rotl(stack_t **stack, unsigned int line_number);
-void _rotr(stack_t **stack, unsigned int line_number);
-void (*get_opcode(char *))(stack_t **stack, unsigned int line_number);
+void handle_cmd(char *argv);
+int get_opcode(stack_t **stack, char *arg, char *item, int count);
+void free_dlistint(stack_t *stack);
+void clean_stack(stack_t **stack);
 
-/*helper functions*/
-char **break_line(char *line);
-int toInt(char *s);
-void err(int code, ...);
-void free_dlist(stack_t *head);
+/* Help Functions */
+int _isdigit(char *c);
+stack_t *fresh_node(int n);
+
+/* Handle Errors */
+void push_err(FILE *file_desc, char *line, stack_t *stack, int count);
+void ins_err(FILE *file_desc, char *line, stack_t stack, char *count, int item);
 
 #endif /* MONTY_H */
