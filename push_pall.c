@@ -1,15 +1,15 @@
 #include "monty.h"
 
 /**
- * push - pushs value to the top of the stack
+ * _push - pushs value to the top of the stack
  * @stack: double pointer to the stack
  * @line_number: number of lines
  *
  * Return: void.
  */
-void push(stack_t **stack, unsigned int line_number)
+void _push(stack_t **stack, unsigned int line_number)
 {
-	stack_t **fresh_node;
+	stack_t *fresh_node;
 	(void)line_number;
 
 	fresh_node = malloc(sizeof(stack_t));
@@ -37,13 +37,13 @@ void push(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * pall - prints all arguments inserted
+ * _pall - prints all arguments inserted
  * @stack: double pointer to the stack
  * @line_number: number of lines
  *
  * Return: nothing.
  */
-void pall(stack_t **stack, unsigned int line_number)
+void _pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp;
 	(void)line_number;
