@@ -4,7 +4,7 @@
  * free_stack_t - function that free a list of type dlistint_t
  * @head: pointer to a list type stack_t
  *
- * Return: void.
+ * Return: nothing.
  */
 void free_stack_t(stack_t *head)
 {
