@@ -55,13 +55,13 @@ void _push(stack_t **stack, unsigned int line_number)
  */
 void _pall(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = NULL;
+	stack_t *present = NULL;
 	(void)line_number;
 
-	tmp = *stack;
-	while (tmp != NULL)
+	present = *stack;
+	while (present != NULL)
 	{
-		dprintf(STDOUT_FILENO, "%d\n", tmp->line_number);
-		tmp = tmp->next;
+		dprintf(STDOUT_FILENO, "%d\n", present->line_number);
+		present = present->next;
 	}
 }
