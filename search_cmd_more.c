@@ -1,22 +1,23 @@
 #include "monty.h"
 
 /**
- * find_command - Parse the line to find the given opcode
- * @line: Line grabbed from monty file
- * @stack: Double pointer pointing to top of stack/queue
- * @line_num: Line number in the file the line was on
- * Return: The name of the command found
+ * find_command - parses the line to find the given opcode
+ * @line: a line grabbed from monty file
+ * @stack: double pointer to the stack/queue
+ * @line_num: line number
+ *
+ * Return: command name found
  **/
 char *find_command(char *line, stack_t **stack, unsigned int line_num)
 {
-	char *command, *push_arg;
+	char *cmd, *push_arg;
 
-	command = strtok(line, "\n\t\r ");
-	if (command == NULL || command[0] == '#')
-		command = "nop";
-	if (strcmp(command, "push") == 0)
+	cmd = strtok(line, "\n\t\r ");
+	if (cmd == NULL || cmd[0] == '#')
+		cmd = "nop";
+	if (strcmp(cmd, "push") == 0)
 	{
-		command = "nop";
+		cmd = "nop";
 		push_arg = strtok(NULL, "\n \t\r");
 		if (int_check(push_arg) == 0)
 		{
@@ -29,56 +30,60 @@ char *find_command(char *line, stack_t **stack, unsigned int line_num)
 		{
 			printf("L%u: usage: push integer\n", line_num);
 			ret_and_q.opcode_return = 1;
-			return (command);
+			return (cmd);
 		}
 	}
-	if (strcmp(command, "stack") == 0)
+	if (strcmp(cmd, "stack") == 0)
 	{
-		command = "nop";
+		cmd = "nop";
 		ret_and_q.queue_val = 0;
-		return (command);
+		return (cmd);
 	}
-	if (strcmp(command, "queue") == 0)
+	if (strcmp(cmd, "queue") == 0)
 	{
-		command = "nop";
+		cmd = "nop";
 		ret_and_q.queue_val = 1;
-		return (command);
+		return (cmd);
 	}
-	return (command);
+	return (cmd);
 }
 
 /**
- * int_check - Check if the given argument to push is a valid integer or not
- * @push_arg: The string argument found after the push opcode
- * Return: 1 if it's not a valid integer, 0 if it is
- **/
+ * int_check - checks if the given argument to push is a valid integer or not
+ * @push_arg: a string argument found after the push opcode
+ *
+ * Return: 1 if it's not a valid integer,
+ * 0 if it is a valid integer
+ */
 int int_check(char *push_arg)
 {
-	int i;
+	int x;
 
 	if (push_arg == NULL)
 		return (1);
-	i = 0;
-	while (push_arg[i] != '\0')
+	x = 0;
+	while (push_arg[x] != '\0')
 	{
-		if (isalpha(push_arg[i]))
+		if (isalpha(push_arg[x]))
 			return (1);
-		i++;
+		x++;
 	}
 	return (0);
 }
 
 /**
- * add_node - Add a node to the top of the list
- * @stack: Double pointer to the top of the stack
- * @push_value: The value to assign to the new node
- **/
+ * add_node - adds a node to the top of stack
+ * @stack: double pointer to the stack
+ * @push_value: a value to assign to a new node
+ *
+ * Return: nothing.
+ */
 void add_node(stack_t **stack, int push_value)
 {
-	stack_t *new_node;
+	stack_t *fresh_node;
 
-	new_node = malloc(sizeof(stack_t));
-	if (new_node == NULL)
+	fresh_node = malloc(sizeof(stack_t));
+	if (fresh_node == NULL)
 	{
 		printf("Error: malloc failed\n");
 		ret_and_q.opcode_return = 1;
@@ -86,41 +91,43 @@ void add_node(stack_t **stack, int push_value)
 	if (ret_and_q.opcode_return != 1)
 	{
 		if (*stack != NULL)
-			(*stack)->prev = new_node;
-		new_node->next = *stack;
-		new_node->n = push_value;
-		new_node->prev = NULL;
-		*stack = new_node;
+			(*stack)->prev = fresh_node;
+		fresh_node->next = *stack;
+		fresh_node->n = push_value;
+		fresh_node->prev = NULL;
+		*stack = fresh_node;
 	}
 }
 
 /**
- * add_node_end - Add a node at the end of the list
- * @stack: Double pointer to the top of the stack
- * @push_value: The value to assign to the new node
- **/
+ * add_node_end - adds a node at the end of the list
+ * @stack: double pointer to the stack
+ * @push_value: a value to assign to the new node
+ *
+ * Return: nothing.
+ */
 void add_node_end(stack_t **stack, int push_value)
 {
-	stack_t *new_node;
-	stack_t *walker;
+	stack_t *fresh_node;
+	stack_t *slider;
 
-	walker = *stack;
-	new_node = malloc(sizeof(stack_t));
-	if (new_node == NULL)
+	slider = *stack;
+	fresh_node = malloc(sizeof(stack_t));
+	if (fresh_node == NULL)
 	{
 		printf("Error: malloc failed\n");
 		ret_and_q.opcode_return = 1;
 	}
 	if (ret_and_q.opcode_return != 1)
 	{
-		while (walker != NULL && walker->next != NULL)
-			walker = walker->next;
-		new_node->n = push_value;
-		new_node->next = NULL;
-		new_node->prev = walker;
-		if (walker != NULL)
-			walker->next = new_node;
+		while (slider != NULL && slider->next != NULL)
+			slider = slider->next;
+		fresh_node->n = push_value;
+		fresh_node->next = NULL;
+		fresh_node->prev = slider;
+		if (slider != NULL)
+			slider->next = fresh_node;
 		else
-			*stack = new_node;
+			*stack = fresh_node;
 	}
 }
