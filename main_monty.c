@@ -1,16 +1,17 @@
 #include "monty.h"
 
 /**
- * main - Loop through given file and run given opcode commands
- * @argc: The number of arguments passed to program
- * @argv: The strings passed to the program
- * Return: 1 if reaches end of the file, exit with EXIT_FAILURE
- * if any opcode fails
- **/
+ * main - loops through given file and run given opcode
+ * @argc: length of argv array
+ * @argv: array of strings
+ *
+ * Return: 1 if reaches end of the file,
+ * exit with EXIT_FAILURE if any opcode fails
+ */
 int main(int argc, char *argv[])
 {
 	FILE *file;
-	char *line, *command;
+	char *line, *cmd;
 	size_t size, line_num;
 	stack_t *stack;
 	ssize_t read = 0;
@@ -33,9 +34,9 @@ int main(int argc, char *argv[])
 	read = getline(&line, &size, file);
 	while (read != -1)
 	{
-		command = find_command(line, &stack, line_num);
-		if (strcmp(command, "nop"))
-			check_codes(command, &stack, line_num);
+		cmd = find_command(line, &stack, line_num);
+		if (strcmp(cmd, "nop"))
+			check_codes(cmd, &stack, line_num);
 		if (ret_and_q.opcode_return != 0)
 		{
 			free_and_exit(line, file, stack);
@@ -50,11 +51,13 @@ int main(int argc, char *argv[])
 }
 
 /**
- * free_and_exit - Free all necessary memory and exit with EXIT_FAILURE
- * @line: The line found using getline()
- * @file: The file opened and being read from
- * @stack: The top of the stack list
- **/
+ * free_and_exit - frees all necessary memory and exits with EXIT_FAILURE
+ * @line: line found with getline()
+ * @file: file opened and being read from
+ * @stack: pointer to the stack
+ *
+ * Return: nothing.
+ */
 void free_and_exit(char *line, FILE *file, stack_t *stack)
 {
 	free_stack(stack);
@@ -64,9 +67,11 @@ void free_and_exit(char *line, FILE *file, stack_t *stack)
 }
 
 /**
- * free_stack - Free all nodes of the stack
- * @stack: Top of the stack list
- **/
+ * free_stack - frees all nodes of the stack
+ * @stack: pointer to the stack
+ *
+ * Return: nothing.
+ */
 void free_stack(stack_t *stack)
 {
 	stack_t *kill_node;
