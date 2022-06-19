@@ -1,5 +1,5 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef _MONTY_H_
+#define _MONTY_H_
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -73,4 +73,4 @@ int check_codes(char *command, stack_t **stack, size_t line_num);
 int int_check(char *push_arg);
 void free_and_exit(char *line, FILE *file, stack_t *stack);
 void free_stack(stack_t *stack);
-#endif
+#endif /* _MONTY_H_ */
